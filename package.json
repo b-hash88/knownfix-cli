@@ -1,0 +1,17 @@
+{
+  "name": "knownfix",
+  "version": "0.2.1",
+  "description": "Connect any AI agent to KnownFix — verified fixes for real errors, sold per-lookup on-chain. Remote MCP bridge + config helper.",
+  "type": "module",
+  "bin": { "knownfix": "index.mjs" },
+  "mcpName": "io.github.b-hash88/knownfix",
+  "files": ["index.mjs", "README.md"],
+  "keywords": ["mcp", "ai-agents", "debugging", "fixes", "knownfix", "agent-commerce"],
+  "homepage": "https://b-hash88.github.io/knownfix/",
+  "repository": { "type": "git", "url": "git+https://github.com/b-hash88/knownfix.git" },
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}

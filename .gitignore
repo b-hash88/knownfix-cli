@@ -1,0 +1,5 @@
+mcp-publisher.exe
+mcp-publisher.tar.gz
+*.tgz
+login.out
+node_modules/
