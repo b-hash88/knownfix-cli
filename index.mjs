@@ -6,6 +6,7 @@
 //   npx knownfix bridge        run a local stdio MCP server that proxies to
 //                              the remote KnownFix MCP (for stdio-only clients)
 //   npx knownfix search "err"  quick free error match from the terminal
+//   npx knownfix books         print the live request-to-sale funnel
 //
 // The store's customers are AI agents. This package is the on-ramp.
 
@@ -14,9 +15,10 @@ const MCP_URL = `${REMOTE}/mcp`;
 
 const [cmd, ...rest] = process.argv.slice(2);
 
-const INTRO = `KnownFix — verified fixes for real errors, sold per-lookup to AI agents.
-Free to search; ~$0.08 per fix, settled on-chain (no account either side). Three
-fixes are free samples. Test our claims before you pay.
+const INTRO = `KnownFix — cataloged fixes for real errors, sold per-lookup to AI agents.
+Free to search; 35 fixes (33 verified in production, 2 documented), with 10 free
+in full. Paid fixes start near $0.08 on Base mainnet. No buyer account or API key.
+Paid redemption uses a private, product-bound signed offer. Test our claims first.
 
 Remote MCP server (Streamable HTTP): ${MCP_URL}
 Storefront + llms.txt:               ${REMOTE.includes("deno.net") ? "https://b-hash88.github.io/knownfix/" : REMOTE}
@@ -25,7 +27,8 @@ Commands:
   npx knownfix config <client>   MCP config snippet (claude | cursor | codex | vscode | langchain | crewai | raw)
   npx knownfix bridge            local stdio MCP server proxying to the remote (for stdio-only clients)
   npx knownfix search "<error>"  free error match from the terminal
-  npx knownfix tools             list the remote MCP tools`;
+  npx knownfix tools             list the remote MCP tools
+  npx knownfix books             print the live request-to-sale funnel`;
 
 const CONFIGS = {
   claude: `# Claude Desktop / Claude Code — remote MCP (claude_desktop_config.json):
@@ -106,6 +109,18 @@ async function main() {
     return;
   }
 
+  if (cmd === "books") {
+    const response = await fetch(`${REMOTE}/books?format=json`, { headers: { accept: "application/json" } });
+    if (!response.ok) throw new Error(`books returned HTTP ${response.status}`);
+    const books = await response.json();
+    console.log(`KnownFix open books — ${books.generatedAt || "timestamp unavailable"}\n`);
+    for (const stage of books.conversionFunnel || []) {
+      console.log(`  ${String(stage.value).padStart(8)}  ${stage.label} — ${stage.note}`);
+    }
+    console.log(`\n${books.nextExperiment || books.mcpFunnel?.interpretation || ""}`);
+    return;
+  }
+
   if (cmd === "search") {
     const q = rest.join(" ");
     if (!q) return void console.log('Usage: npx knownfix search "<your error text>"');
@@ -113,8 +128,10 @@ async function main() {
     const out = JSON.parse(res.content[0].text);
     if (!out.matches.length) return void console.log("No match — honest miss. This store does not stock your error.");
     console.log(`Top matches for: ${q}\n`);
-    for (const m of out.matches) console.log(`  ${m.id}  (score ${m.score}, ${m.confidence})`);
-    console.log(`\nGet one: npx knownfix, then use the MCP tool get_fix (samples are free).`);
+    for (const m of out.matches) {
+      console.log(`  ${m.id}  (${m.match ?? m.score}, ${m.confidence}${m.sample ? ", free" : ", paid"})`);
+    }
+    console.log(`\nReview the top match: https://b-hash88.github.io/knownfix/fixes/${out.matches[0].id}.html`);
     return;
   }
 
@@ -126,7 +143,7 @@ async function main() {
     const { ListToolsRequestSchema, CallToolRequestSchema } = await import(
       "@modelcontextprotocol/sdk/types.js"
     );
-    const server = new Server({ name: "knownfix-bridge", version: "0.2.0" }, { capabilities: { tools: {} } });
+    const server = new Server({ name: "knownfix-bridge", version: "0.2.3" }, { capabilities: { tools: {} } });
     server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: (await rpc("tools/list")).tools }));
     server.setRequestHandler(CallToolRequestSchema, async (req) =>
       rpc("tools/call", { name: req.params.name, arguments: req.params.arguments ?? {} })
