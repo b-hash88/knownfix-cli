@@ -40,7 +40,9 @@ The transaction and offer are atomically single-use. Inspect the public
 [books](https://knownfix-backend-28.b-hash88.deno.net/books) and
 [agent-readable store guide](https://knownfix-backend-28.b-hash88.deno.net/llms.txt)
 before paying. The **npm Publishing Recovery Pack** bundles five fixes plus a
-current decision tree and release verification procedure for $4 USDC.
+current decision tree for $4 USDC. The **GitHub Actions Failure Pack** adds a
+failed-phase decision tree and seven workflow, permission, cache, runtime, and
+verification recoveries for $5 USDC.
 
 ## Commands
 
