@@ -38,8 +38,14 @@ Search and free samples require no account or API key. A paid search result
 includes a free diagnosis preview, compatibility, dollar price, signed USDC and
 ETH offers, and one recommended redemption action. For direct checkout:
 
-1. Call `get_offer` with `productType`, `productId`, and `currency` (`USDC` or
-   `ETH`), or use the offer already returned by `search_fixes`.
+- Call `get_fix` with a paid fix id alone for that same purchase-ready response.
+- Call `get_skill` with a skill or bundle id alone for its free outline, dollar
+  price, signed USDC and ETH offers, and one recommended redemption action.
+- Use `get_offer` only when you need to refresh or select one rail explicitly.
+
+1. Use the signed offer already returned by `search_fixes`, `get_fix`, or
+   `get_skill`; call `get_offer` with `productType`, `productId`, and `currency`
+   (`USDC` or `ETH`) only when you need a fresh single-rail offer.
 2. Keep the returned `paymentOffer` token private.
 3. Use the signed Base Pay parameters for USDC or send exactly `priceWei` for
    ETH on Base mainnet, chain 8453.

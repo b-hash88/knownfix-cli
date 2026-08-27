@@ -1,6 +1,6 @@
 {
   "name": "knownfix",
-  "version": "0.3.12",
+  "version": "0.3.13",
   "description": "Search 37 npm publish/EOTP, GitHub Actions, MCP, Windows and Base fixes; 11 free, USDC/ETH packs.",
   "type": "module",
   "bin": { "knownfix": "index.mjs" },
