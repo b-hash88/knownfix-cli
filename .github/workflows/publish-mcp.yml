@@ -1,0 +1,42 @@
+name: Publish to MCP Registry
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: mcp-registry-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Check out the release
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Install checksum-pinned mcp-publisher
+        env:
+          PUBLISHER_URL: https://github.com/modelcontextprotocol/registry/releases/download/v1.8.1/mcp-publisher_linux_amd64.tar.gz
+          PUBLISHER_SHA256: a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc
+        run: |
+          curl --fail --location --retry 3 --output mcp-publisher.tar.gz "$PUBLISHER_URL"
+          echo "$PUBLISHER_SHA256  mcp-publisher.tar.gz" | sha256sum --check --strict
+          tar --extract --gzip --file mcp-publisher.tar.gz mcp-publisher
+          chmod 0755 mcp-publisher
+
+      - name: Validate Registry manifest
+        run: ./mcp-publisher validate
+
+      - name: Authenticate with GitHub OIDC
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish Registry manifest
+        run: ./mcp-publisher publish
