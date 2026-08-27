@@ -2,9 +2,21 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.b-hash88/knownfix",
   "title": "KnownFix",
-  "description": "KnownFix: 36 dev-error fixes, purchase-ready search, 11 free fixes, and signed USDC or ETH checkout.",
-  "version": "0.3.1",
+  "description": "Search 36 dev-error fixes, get 11 free, and buy signed USDC or ETH fixes and bundles on Base.",
+  "version": "0.3.2",
   "websiteUrl": "https://knownfix-backend-28.b-hash88.deno.net/",
+  "icons": [
+    {
+      "src": "https://knownfix-backend-28.b-hash88.deno.net/knownfix-icon.png",
+      "mimeType": "image/png",
+      "sizes": ["1254x1254"]
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "categories": ["developer-tools", "debugging", "agent-commerce"]
+    }
+  },
   "repository": {
     "url": "https://github.com/b-hash88/knownfix",
     "source": "github"
@@ -19,7 +31,7 @@
     {
       "registryType": "npm",
       "identifier": "knownfix",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "transport": {
         "type": "stdio"
       }
