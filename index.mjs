@@ -136,7 +136,7 @@ async function main() {
     if (purchase?.checkout === "ready") {
       console.log(`\nLikely cause: ${purchase.diagnosisPreview?.likelyCause || "A stocked failure mode matches this signature."}`);
       console.log(`Price: ${purchase.price?.usd || "$0.05"} ${purchase.price?.currency || "USD"}`);
-      console.log(`Next: ${purchase.nextAction?.instruction || "Pay the signed offer, then redeem with get_fix."}`);
+      console.log("Next: connect the MCP server and use the private purchase object from search_fixes, or call get_offer.");
       console.log("The signed paymentOffer is intentionally not printed by this CLI.");
     } else if (out.topMatchTier === "free-sample") {
       console.log("\nThe complete free fix is included in the MCP search result.");
@@ -153,7 +153,7 @@ async function main() {
     const { ListToolsRequestSchema, CallToolRequestSchema } = await import(
       "@modelcontextprotocol/sdk/types.js"
     );
-    const server = new Server({ name: "knownfix-bridge", version: "0.3.0" }, { capabilities: { tools: {} } });
+    const server = new Server({ name: "knownfix-bridge", version: "0.3.1" }, { capabilities: { tools: {} } });
     server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: (await rpc("tools/list")).tools }));
     server.setRequestHandler(CallToolRequestSchema, async (req) =>
       rpc("tools/call", { name: req.params.name, arguments: req.params.arguments ?? {} })

@@ -3,7 +3,7 @@
   "name": "io.github.b-hash88/knownfix",
   "title": "KnownFix",
   "description": "KnownFix: 36 dev-error fixes, purchase-ready search, 11 free fixes, and signed USDC or ETH checkout.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "websiteUrl": "https://knownfix-backend-28.b-hash88.deno.net/",
   "repository": {
     "url": "https://github.com/b-hash88/knownfix",
@@ -19,7 +19,7 @@
     {
       "registryType": "npm",
       "identifier": "knownfix",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "transport": {
         "type": "stdio"
       }
