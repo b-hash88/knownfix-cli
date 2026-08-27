@@ -4,10 +4,10 @@
   "title": "KnownFix",
   "description": "Search 36 dev-error fixes, get 11 free, and buy signed USDC or ETH fixes and bundles on Base.",
   "version": "0.3.6",
-  "websiteUrl": "https://knownfix-backend-28.b-hash88.deno.net/",
+  "websiteUrl": "https://b-hash88.github.io/knownfix/",
   "icons": [
     {
-      "src": "https://knownfix-backend-28.b-hash88.deno.net/knownfix-icon.png",
+      "src": "https://b-hash88.github.io/knownfix/knownfix-icon.png",
       "mimeType": "image/png",
       "sizes": ["1254x1254"]
     }
