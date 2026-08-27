@@ -153,7 +153,7 @@ async function main() {
     const { ListToolsRequestSchema, CallToolRequestSchema } = await import(
       "@modelcontextprotocol/sdk/types.js"
     );
-    const server = new Server({ name: "knownfix-bridge", version: "0.3.8" }, { capabilities: { tools: {} } });
+    const server = new Server({ name: "knownfix-bridge", version: "0.3.9" }, { capabilities: { tools: {} } });
     server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: (await rpc("tools/list")).tools }));
     server.setRequestHandler(CallToolRequestSchema, async (req) =>
       rpc("tools/call", { name: req.params.name, arguments: req.params.arguments ?? {} })

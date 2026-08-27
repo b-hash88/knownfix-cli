@@ -28,6 +28,9 @@ schema and behavior annotations. Paid audits are previewed and redeemed through
 `audit_endpoint`; `get_skill` delivers both individual skills and assembled
 multi-fix bundles; and contributors can poll the private id returned by
 `submit_fix` with `check_submission` without exposing their submitted text.
+Current npm CLI EOTP wording is indexed as an exact alias of the documented
+2FA/authorized-publishing recovery, so agents reach the same remedy by either
+the interactive EOTP or registry 403 signature.
 
 ## Buying safely
 
