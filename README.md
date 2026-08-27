@@ -1,7 +1,7 @@
 # KnownFix
 
 Connect an AI agent to the [KnownFix storefront](https://b-hash88.github.io/knownfix/),
-a catalog of 36 real development-error fixes: 33 verified in production, 3
+a catalog of 37 real development-error fixes: 33 verified in production, 4
 documented, and 11 available in full for free.
 
 ```bash
@@ -41,7 +41,7 @@ ETH offers, and one recommended redemption action. For direct checkout:
 The payment proof and offer are atomically single-use. Inspect the public
 [books](https://knownfix-backend-28.b-hash88.deno.net/books) and
 [agent-readable store guide](https://b-hash88.github.io/knownfix/llms.txt)
-before paying. The **npm Publishing Recovery Pack** bundles five fixes plus a
+before paying. The **npm Publishing Recovery Pack** bundles six fixes plus a
 current decision tree for $4 USDC. The **GitHub Actions Failure Pack** adds a
 failed-phase decision tree and seven workflow, permission, cache, runtime, and
 verification recoveries for $5 USDC. The **MCP Server Operations Pack** adds a
