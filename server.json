@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.b-hash88/knownfix",
   "title": "KnownFix",
-  "description": "Search 37 npm publish, GitHub Actions, MCP, Windows and Base fixes; 11 free, paid USDC/ETH packs.",
-  "version": "0.3.10",
+  "description": "Search 37 npm publish/EOTP, GitHub Actions, MCP, Windows and Base fixes; 11 free, USDC/ETH packs.",
+  "version": "0.3.11",
   "websiteUrl": "https://b-hash88.github.io/knownfix/",
   "icons": [
     {
@@ -31,7 +31,7 @@
     {
       "registryType": "npm",
       "identifier": "knownfix",
-      "version": "0.3.10",
+      "version": "0.3.11",
       "transport": {
         "type": "stdio"
       }
