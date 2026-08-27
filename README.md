@@ -11,6 +11,17 @@ npx knownfix tools
 npx knownfix books
 ```
 
+## Release 0.3.16
+
+Paid npm publish EOTP/403 searches now recommend the six-fix **npm Publishing
+Recovery Pack** for $4 while returning a separately signed $0.05 exact-fix
+fallback in the same response. Agents can choose either checkout without first
+discovering or calling `get_offer`.
+
+This release also adds the free, production-verified MCP Registry expired-JWT
+field report, including one-off GitHub login and recurring GitHub OIDC recovery
+paths, verification evidence, and authoritative sources.
+
 ## Agent connection
 
 The hosted MCP server uses Streamable HTTP:
