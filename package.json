@@ -1,7 +1,7 @@
 {
   "name": "knownfix",
-  "version": "0.3.13",
-  "description": "Search 37 npm publish/EOTP, GitHub Actions, MCP, Windows and Base fixes; 11 free, USDC/ETH packs.",
+  "version": "0.3.14",
+  "description": "Search 38 npm publish/EOTP, GitHub Actions, MCP, Windows and Base fixes; 12 free, USDC/ETH packs.",
   "type": "module",
   "bin": { "knownfix": "index.mjs" },
   "mcpName": "io.github.b-hash88/knownfix",

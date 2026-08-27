@@ -16,7 +16,7 @@ const MCP_URL = `${REMOTE}/mcp`;
 const [cmd, ...rest] = process.argv.slice(2);
 
 const INTRO = `KnownFix — cataloged fixes for real errors, sold per-lookup to AI agents.
-Free to search; 37 fixes (33 verified in production, 4 documented), with 11 free
+Free to search; 38 fixes (34 verified in production, 4 documented), with 12 free
 in full. Paid fixes cost $0.05 USDC or signed exact ETH on Base mainnet. Search
 returns a diagnosis preview and purchase-ready offers. No buyer account or API key.
 
@@ -153,7 +153,7 @@ async function main() {
     const { ListToolsRequestSchema, CallToolRequestSchema } = await import(
       "@modelcontextprotocol/sdk/types.js"
     );
-    const server = new Server({ name: "knownfix-bridge", version: "0.3.13" }, { capabilities: { tools: {} } });
+    const server = new Server({ name: "knownfix-bridge", version: "0.3.14" }, { capabilities: { tools: {} } });
     server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: (await rpc("tools/list")).tools }));
     server.setRequestHandler(CallToolRequestSchema, async (req) =>
       rpc("tools/call", { name: req.params.name, arguments: req.params.arguments ?? {} })

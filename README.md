@@ -1,8 +1,8 @@
 # KnownFix
 
 Connect an AI agent to the [KnownFix storefront](https://b-hash88.github.io/knownfix/),
-a catalog of 37 real development-error fixes: 33 verified in production, 4
-documented, and 11 available in full for free.
+a catalog of 38 real development-error fixes: 34 verified in production, 4
+documented, and 12 available in full for free.
 
 ```bash
 npx knownfix search "your exact error"
