@@ -1,7 +1,7 @@
 {
   "name": "knownfix",
-  "version": "0.3.9",
-  "description": "MCP storefront for 37 dev-error fixes: purchase-ready search, 11 free fixes, signed USDC or ETH offers, and premium recovery packs on Base.",
+  "version": "0.3.10",
+  "description": "Search 37 npm publish, GitHub Actions, MCP, Windows and Base fixes; 11 free, paid USDC/ETH packs.",
   "type": "module",
   "bin": { "knownfix": "index.mjs" },
   "mcpName": "io.github.b-hash88/knownfix",
