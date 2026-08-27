@@ -23,6 +23,12 @@ Run `npx knownfix config <client>` for Claude, Cursor, Codex, VS Code,
 LangChain, CrewAI, or raw JSON-RPC. `npx knownfix bridge` provides a local stdio
 bridge for clients without remote HTTP support.
 
+The remote server currently publishes 12 tools. Every tool includes an output
+schema and behavior annotations. Paid audits are previewed and redeemed through
+`audit_endpoint`; `get_skill` delivers both individual skills and assembled
+multi-fix bundles; and contributors can poll the private id returned by
+`submit_fix` with `check_submission` without exposing their submitted text.
+
 ## Buying safely
 
 Search and free samples require no account or API key. A paid search result

@@ -1,6 +1,6 @@
 {
   "name": "knownfix",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "MCP storefront for 37 dev-error fixes: purchase-ready search, 11 free fixes, signed USDC or ETH offers, and premium recovery packs on Base.",
   "type": "module",
   "bin": { "knownfix": "index.mjs" },
