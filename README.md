@@ -42,7 +42,9 @@ The transaction and offer are atomically single-use. Inspect the public
 before paying. The **npm Publishing Recovery Pack** bundles five fixes plus a
 current decision tree for $4 USDC. The **GitHub Actions Failure Pack** adds a
 failed-phase decision tree and seven workflow, permission, cache, runtime, and
-verification recoveries for $5 USDC.
+verification recoveries for $5 USDC. The **MCP Server Operations Pack** adds a
+dual-era stdio, Streamable HTTP, tool-contract, and official-registry runbook
+with four catalog fixes for $6 USDC.
 
 ## Commands
 
