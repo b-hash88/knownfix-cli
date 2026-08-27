@@ -16,12 +16,12 @@ const MCP_URL = `${REMOTE}/mcp`;
 const [cmd, ...rest] = process.argv.slice(2);
 
 const INTRO = `KnownFix — cataloged fixes for real errors, sold per-lookup to AI agents.
-Free to search; 35 fixes (33 verified in production, 2 documented), with 10 free
-in full. Paid fixes start near $0.08 on Base mainnet. No buyer account or API key.
-Paid redemption uses a private, product-bound signed offer. Test our claims first.
+Free to search; 36 fixes (33 verified in production, 3 documented), with 11 free
+in full. Paid fixes cost $0.05 USDC or signed exact ETH on Base mainnet. Search
+returns a diagnosis preview and purchase-ready offers. No buyer account or API key.
 
 Remote MCP server (Streamable HTTP): ${MCP_URL}
-Storefront + llms.txt:               ${REMOTE.includes("deno.net") ? "https://b-hash88.github.io/knownfix/" : REMOTE}
+Store guide + product catalog:       ${REMOTE}/llms.txt
 
 Commands:
   npx knownfix config <client>   MCP config snippet (claude | cursor | codex | vscode | langchain | crewai | raw)
@@ -131,7 +131,17 @@ async function main() {
     for (const m of out.matches) {
       console.log(`  ${m.id}  (${m.match ?? m.score}, ${m.confidence}${m.sample ? ", free" : ", paid"})`);
     }
-    console.log(`\nReview the top match: https://b-hash88.github.io/knownfix/fixes/${out.matches[0].id}.html`);
+    const top = out.matches[0];
+    const purchase = out.purchase;
+    if (purchase?.checkout === "ready") {
+      console.log(`\nLikely cause: ${purchase.diagnosisPreview?.likelyCause || "A stocked failure mode matches this signature."}`);
+      console.log(`Price: ${purchase.price?.usd || "$0.05"} ${purchase.price?.currency || "USD"}`);
+      console.log(`Next: ${purchase.nextAction?.instruction || "Pay the signed offer, then redeem with get_fix."}`);
+      console.log("The signed paymentOffer is intentionally not printed by this CLI.");
+    } else if (out.topMatchTier === "free-sample") {
+      console.log("\nThe complete free fix is included in the MCP search result.");
+    }
+    console.log(`\nMachine-readable store guide: ${REMOTE}/llms.txt`);
     return;
   }
 
@@ -143,7 +153,7 @@ async function main() {
     const { ListToolsRequestSchema, CallToolRequestSchema } = await import(
       "@modelcontextprotocol/sdk/types.js"
     );
-    const server = new Server({ name: "knownfix-bridge", version: "0.2.3" }, { capabilities: { tools: {} } });
+    const server = new Server({ name: "knownfix-bridge", version: "0.3.0" }, { capabilities: { tools: {} } });
     server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: (await rpc("tools/list")).tools }));
     server.setRequestHandler(CallToolRequestSchema, async (req) =>
       rpc("tools/call", { name: req.params.name, arguments: req.params.arguments ?? {} })

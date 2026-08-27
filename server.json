@@ -2,9 +2,9 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.b-hash88/knownfix",
   "title": "KnownFix",
-  "description": "35 cataloged dev-error fixes for AI agents: free search, 10 full free fixes, and signed product-bound paid offers.",
-  "version": "0.2.3",
-  "websiteUrl": "https://b-hash88.github.io/knownfix/",
+  "description": "KnownFix: 36 dev-error fixes, purchase-ready search, 11 free fixes, and signed USDC or ETH checkout.",
+  "version": "0.3.0",
+  "websiteUrl": "https://knownfix-backend-28.b-hash88.deno.net/",
   "repository": {
     "url": "https://github.com/b-hash88/knownfix",
     "source": "github"
@@ -19,7 +19,7 @@
     {
       "registryType": "npm",
       "identifier": "knownfix",
-      "version": "0.2.3",
+      "version": "0.3.0",
       "transport": {
         "type": "stdio"
       }

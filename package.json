@@ -1,7 +1,7 @@
 {
   "name": "knownfix",
-  "version": "0.2.3",
-  "description": "MCP storefront for 35 cataloged dev-error fixes: free search, 10 full free fixes, signed product-bound offers, and Base-mainnet settlement. Works with Claude, Cursor, Codex, VS Code, LangChain, and CrewAI.",
+  "version": "0.3.0",
+  "description": "MCP storefront for 36 dev-error fixes: purchase-ready search, 11 free fixes, signed USDC or ETH offers, and premium recovery packs on Base.",
   "type": "module",
   "bin": { "knownfix": "index.mjs" },
   "mcpName": "io.github.b-hash88/knownfix",
@@ -22,7 +22,7 @@
     "knownfix",
     "agent-commerce"
   ],
-  "homepage": "https://b-hash88.github.io/knownfix/",
+  "homepage": "https://knownfix-backend-28.b-hash88.deno.net/",
   "repository": { "type": "git", "url": "git+https://github.com/b-hash88/knownfix.git" },
   "license": "MIT",
   "engines": { "node": ">=18" },
