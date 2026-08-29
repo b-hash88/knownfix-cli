@@ -3,7 +3,7 @@
   "name": "io.github.b-hash88/knownfix",
   "title": "KnownFix",
   "description": "Search 38 npm publish/EOTP, GitHub Actions, MCP, Windows and Base fixes; 12 free, USDC/ETH packs.",
-  "version": "0.3.16",
+  "version": "0.3.20",
   "websiteUrl": "https://b-hash88.github.io/knownfix/",
   "icons": [
     {
@@ -31,7 +31,7 @@
     {
       "registryType": "npm",
       "identifier": "knownfix",
-      "version": "0.3.16",
+      "version": "0.3.17",
       "transport": {
         "type": "stdio"
       }

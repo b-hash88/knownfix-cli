@@ -1,6 +1,6 @@
 {
   "name": "knownfix",
-  "version": "0.3.16",
+  "version": "0.3.17",
   "description": "Search 38 npm publish/EOTP, GitHub Actions, MCP, Windows and Base fixes; 12 free, USDC/ETH packs.",
   "type": "module",
   "bin": {
@@ -9,8 +9,12 @@
   "mcpName": "io.github.b-hash88/knownfix",
   "files": [
     "index.mjs",
-    "README.md"
+    "README.md",
+    "test.mjs"
   ],
+  "scripts": {
+    "test": "node --test test.mjs"
+  },
   "keywords": [
     "mcp",
     "mcp-server",
