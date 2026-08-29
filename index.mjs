@@ -6,6 +6,7 @@
 //   npx knownfix bridge        run a local stdio MCP server that proxies to
 //                              the remote KnownFix MCP (for stdio-only clients)
 //   npx knownfix search "err"  quick free error match from the terminal
+//   npx knownfix search --json  complete machine-readable search result
 //   npx knownfix books         print the live request-to-sale funnel
 //
 // The store's customers are AI agents. This package is the on-ramp.
@@ -27,6 +28,8 @@ Commands:
   npx knownfix config <client>   MCP config snippet (claude | cursor | codex | vscode | langchain | crewai | raw)
   npx knownfix bridge            local stdio MCP server proxying to the remote (for stdio-only clients)
   npx knownfix search "<error>"  free error match from the terminal
+  npx knownfix search --json "<error>"
+                                  complete result; keep signed offers private
   npx knownfix tools             list the remote MCP tools
   npx knownfix books             print the live request-to-sale funnel`;
 
@@ -122,10 +125,12 @@ async function main() {
   }
 
   if (cmd === "search") {
-    const q = rest.join(" ");
+    const jsonOutput = rest.includes("--json");
+    const q = rest.filter((part) => part !== "--json").join(" ");
     if (!q) return void console.log('Usage: npx knownfix search "<your error text>"');
     const res = await rpc("tools/call", { name: "search_fixes", arguments: { query: q } });
     const out = JSON.parse(res.content[0].text);
+    if (jsonOutput) return void console.log(JSON.stringify(out, null, 2));
     if (!out.matches.length) return void console.log("No match — honest miss. This store does not stock your error.");
     console.log(`Top matches for: ${q}\n`);
     for (const m of out.matches) {
@@ -135,9 +140,12 @@ async function main() {
     const purchase = out.purchase;
     if (purchase?.checkout === "ready") {
       console.log(`\nLikely cause: ${purchase.diagnosisPreview?.likelyCause || "A stocked failure mode matches this signature."}`);
+      if (purchase.compatibility?.technologies?.length) {
+        console.log(`Compatibility: ${purchase.compatibility.technologies.join(", ")}`);
+      }
       console.log(`Price: ${purchase.price?.usd || "$0.05"} ${purchase.price?.currency || "USD"}`);
-      console.log("Next: connect the MCP server and use the private purchase object from search_fixes, or call get_offer.");
-      console.log("The signed paymentOffer is intentionally not printed by this CLI.");
+      console.log("Next: connect KnownFix as MCP and call search_fixes with this error to receive the private signed USDC/ETH checkout and its single redemption action.");
+      console.log("The signed paymentOffer is hidden in default output; use --json only in a private terminal or agent process.");
     } else if (out.topMatchTier === "free-sample") {
       console.log("\nThe complete free fix is included in the MCP search result.");
     }
@@ -153,7 +161,7 @@ async function main() {
     const { ListToolsRequestSchema, CallToolRequestSchema } = await import(
       "@modelcontextprotocol/sdk/types.js"
     );
-    const server = new Server({ name: "knownfix-bridge", version: "0.3.16" }, { capabilities: { tools: {} } });
+    const server = new Server({ name: "knownfix-bridge", version: "0.3.17" }, { capabilities: { tools: {} } });
     server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: (await rpc("tools/list")).tools }));
     server.setRequestHandler(CallToolRequestSchema, async (req) =>
       rpc("tools/call", { name: req.params.name, arguments: req.params.arguments ?? {} })

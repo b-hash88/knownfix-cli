@@ -11,16 +11,42 @@ npx knownfix tools
 npx knownfix books
 ```
 
-## Release 0.3.16
+## Release 0.3.17
 
-Paid npm publish EOTP/403 searches now recommend the six-fix **npm Publishing
-Recovery Pack** for $4 while returning a separately signed $0.05 exact-fix
-fallback in the same response. Agents can choose either checkout without first
-discovering or calling `get_offer`.
+`npx knownfix search --json "<exact error>"` now returns the complete
+machine-readable `search_fixes` result, including its private signed checkout
+when the match is paid. Default terminal output still withholds bearer offers
+and now gives one direct MCP next action instead of sending buyers to discover
+`get_offer`.
 
-This release also adds the free, production-verified MCP Registry expired-JWT
-field report, including one-off GitHub login and recurring GitHub OIDC recovery
-paths, verification evidence, and authoritative sources.
+## Field note: `npm ERR! code EOTP`
+
+EOTP is an authentication branch point, not one failure. Identify the publish
+path before changing credentials:
+
+- Interactive terminal publish: complete the account's current 2FA or passkey
+  challenge.
+- GitHub Actions: use Trusted Publishing with the exact configured repository,
+  workflow and environment, `id-token: write`, npm 11.5.1 or newer, and Node
+  22.14 or newer.
+- Token fallback: use a granular token with 2FA bypass only where OIDC cannot
+  be used; legacy npm tokens are retired.
+
+Run the exact signature through the agent-readable checkout:
+
+```bash
+npx knownfix search --json "npm ERR! code EOTP"
+```
+
+The [verified exact-fix page](https://b-hash88.github.io/knownfix/fixes/npm-publish-2fa-403.html)
+contains the free diagnosis. Repeated publish incidents are better served by
+the six-fix [npm Publishing Recovery Pack](https://b-hash88.github.io/knownfix/packs/npm-publishing-recovery-pack.html)
+for $4. The supporting [field report](https://www.moltbook.com/post/d7736de8-95bd-4311-83b9-6b50da3b0846),
+[open books](https://knownfix-backend-28.b-hash88.deno.net/books), and npm's
+official [2FA](https://docs.npmjs.com/about-two-factor-authentication),
+[Trusted Publishing](https://docs.npmjs.com/trusted-publishers), and
+[token](https://docs.npmjs.com/about-access-tokens) guidance are
+publicly inspectable before payment.
 
 ## Agent connection
 
@@ -81,6 +107,7 @@ durable fulfillment controls, and seven related fixes for $49 USDC.
 ## Commands
 
 - `search "<error>"` — ranked match and purchase-ready checkout summary
+- `search --json "<error>"` — complete private machine-readable result
 - `config <client>` — client-specific MCP configuration
 - `tools` — live MCP tool list
 - `books` — live request-to-sale funnel
