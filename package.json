@@ -3,9 +3,14 @@
   "version": "0.3.16",
   "description": "Search 38 npm publish/EOTP, GitHub Actions, MCP, Windows and Base fixes; 12 free, USDC/ETH packs.",
   "type": "module",
-  "bin": { "knownfix": "index.mjs" },
+  "bin": {
+    "knownfix": "index.mjs"
+  },
   "mcpName": "io.github.b-hash88/knownfix",
-  "files": ["index.mjs", "README.md"],
+  "files": [
+    "index.mjs",
+    "README.md"
+  ],
   "keywords": [
     "mcp",
     "mcp-server",
@@ -31,10 +36,18 @@
     "agent-commerce"
   ],
   "homepage": "https://b-hash88.github.io/knownfix/",
-  "repository": { "type": "git", "url": "git+https://github.com/b-hash88/knownfix-cli.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b-hash88/knownfix-cli.git"
+  },
   "license": "MIT",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "volta": {
+    "node": "24.19.0"
   }
 }
