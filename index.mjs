@@ -7,63 +7,36 @@
 //                              the remote KnownFix MCP (for stdio-only clients)
 //   npx knownfix search "err"  quick free error match from the terminal
 //   npx knownfix search --json  complete machine-readable search result
-//   npx knownfix books         print the live request-to-sale funnel
+//   npx knownfix books         explain owner-only statistics access
 //
 // The store's customers are AI agents. This package is the on-ramp.
 
+import { clientSetup } from './lib/mcp-client-configs.mjs';
 const REMOTE = process.env.KNOWNFIX_URL || "https://knownfix-backend-28.b-hash88.deno.net";
 const MCP_URL = `${REMOTE}/mcp`;
 
 const [cmd, ...rest] = process.argv.slice(2);
 
 const INTRO = `KnownFix — cataloged fixes for real errors, sold per-lookup to AI agents.
-Free to search; 38 fixes (34 verified in production, 4 documented), with 12 free
-in full. Paid fixes cost $0.05 USDC or signed exact ETH on Base mainnet. Search
+Free to search, with free fixes and six full workflow skills. Current inventory
+is available from get_overview. Paid fixes start at $0.05 USDC on Base. Search
 returns a diagnosis preview and purchase-ready offers. No buyer account or API key.
 
 Remote MCP server (Streamable HTTP): ${MCP_URL}
 Store guide + product catalog:       ${REMOTE}/llms.txt
 
 Commands:
-  npx knownfix config <client>   MCP config snippet (claude | cursor | codex | vscode | langchain | crewai | raw)
+  npx knownfix config <client>   MCP setup (claude-code | claude-desktop | cursor | codex | vscode | langchain | crewai | raw)
   npx knownfix bridge            local stdio MCP server proxying to the remote (for stdio-only clients)
   npx knownfix search "<error>"  free error match from the terminal
   npx knownfix search --json "<error>"
                                   complete result; keep signed offers private
   npx knownfix tools             list the remote MCP tools
-  npx knownfix books             print the live request-to-sale funnel`;
+  npx knownfix inspect-response FILE|-   offline JSON-RPC envelope check
+  npx knownfix retry-plan FILE|-         offline retry budget model
+  npx knownfix books             explains owner-only stats access`;
 
 const CONFIGS = {
-  claude: `# Claude Desktop / Claude Code — remote MCP (claude_desktop_config.json):
-{
-  "mcpServers": {
-    "knownfix": { "url": "${MCP_URL}", "transport": "http" }
-  }
-}
-# Or, for stdio-only builds, bridge it:
-{
-  "mcpServers": {
-    "knownfix": { "command": "npx", "args": ["-y", "knownfix", "bridge"] }
-  }
-}`,
-  cursor: `# Cursor (.cursor/mcp.json):
-{
-  "mcpServers": {
-    "knownfix": { "url": "${MCP_URL}" }
-  }
-}`,
-  codex: `# OpenAI Codex / codex config — stdio bridge:
-{
-  "mcpServers": {
-    "knownfix": { "command": "npx", "args": ["-y", "knownfix", "bridge"] }
-  }
-}`,
-  vscode: `# VS Code (.vscode/mcp.json):
-{
-  "servers": {
-    "knownfix": { "type": "http", "url": "${MCP_URL}" }
-  }
-}`,
   langchain: `# LangChain (langchain-mcp-adapters):
 from langchain_mcp_adapters.client import MultiServerMCPClient
 client = MultiServerMCPClient({
@@ -96,10 +69,18 @@ async function rpc(method, params) {
 async function main() {
   if (!cmd || cmd === "help" || cmd === "--help") return void console.log(INTRO);
 
+  if (cmd === 'inspect-response' || cmd === 'retry-plan') {
+    const { main } = await import('./toolkit/cli.mjs');
+    await main([cmd, ...rest]);
+    return;
+  }
+
   if (cmd === "config") {
     const client = (rest[0] || "").toLowerCase();
+    const setup = clientSetup(client, MCP_URL);
+    if (setup) { console.log(`# ${setup.filename}\n${setup.text}`); return; }
     if (!CONFIGS[client]) {
-      console.log(`Usage: npx knownfix config <${Object.keys(CONFIGS).join(" | ")}>`);
+      console.log(`Usage: npx knownfix config <claude-code | claude-desktop | codex | cursor | vscode | ${Object.keys(CONFIGS).join(" | ")}>`);
       return;
     }
     console.log(CONFIGS[client]);
@@ -113,14 +94,7 @@ async function main() {
   }
 
   if (cmd === "books") {
-    const response = await fetch(`${REMOTE}/books?format=json`, { headers: { accept: "application/json" } });
-    if (!response.ok) throw new Error(`books returned HTTP ${response.status}`);
-    const books = await response.json();
-    console.log(`KnownFix open books — ${books.generatedAt || "timestamp unavailable"}\n`);
-    for (const stage of books.conversionFunnel || []) {
-      console.log(`  ${String(stage.value).padStart(8)}  ${stage.label} — ${stage.note}`);
-    }
-    console.log(`\n${books.nextExperiment || books.mcpFunnel?.interpretation || ""}`);
+    console.log('Books is owner-only. Use the owner sign-in flow; never add its credential to MCP config. No public statistics are returned.');
     return;
   }
 
@@ -161,7 +135,7 @@ async function main() {
     const { ListToolsRequestSchema, CallToolRequestSchema } = await import(
       "@modelcontextprotocol/sdk/types.js"
     );
-    const server = new Server({ name: "knownfix-bridge", version: "0.3.17" }, { capabilities: { tools: {} } });
+    const server = new Server({ name: "knownfix-bridge", version: "0.4.0" }, { capabilities: { tools: {} } });
     server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: (await rpc("tools/list")).tools }));
     server.setRequestHandler(CallToolRequestSchema, async (req) =>
       rpc("tools/call", { name: req.params.name, arguments: req.params.arguments ?? {} })

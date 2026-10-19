@@ -1,0 +1,13 @@
+name: KnownFix CLI Checks
+on: [push, pull_request, workflow_dispatch]
+defaults:
+  run:
+    shell: powershell
+jobs:
+  cli:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: CLI contracts and local toolkit
+        run: node --test test.mjs toolkit-test.mjs

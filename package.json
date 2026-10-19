@@ -1,7 +1,7 @@
 {
   "name": "knownfix",
-  "version": "0.3.17",
-  "description": "Search 38 npm publish/EOTP, GitHub Actions, MCP, Windows and Base fixes; 12 free, USDC/ETH packs.",
+  "version": "0.4.0",
+  "description": "Developer fixes, six free agent skills, local response/retry tools and scoped services over MCP.",
   "type": "module",
   "bin": {
     "knownfix": "index.mjs"
@@ -10,10 +10,12 @@
   "files": [
     "index.mjs",
     "README.md",
-    "test.mjs"
+    "lib",
+    "toolkit",
+    "skills"
   ],
   "scripts": {
-    "test": "node --test test.mjs"
+    "test": "node --test test.mjs toolkit-test.mjs"
   },
   "keywords": [
     "mcp",

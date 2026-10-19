@@ -1,0 +1,9 @@
+{
+  "attempts": 6,
+  "initialDelay": 5,
+  "multiplier": 2,
+  "maxDelay": 300,
+  "timeout": 10,
+  "budget": 600,
+  "jitter": "full"
+}

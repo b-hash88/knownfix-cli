@@ -1,116 +1,98 @@
 # KnownFix
 
-Connect an AI agent to the [KnownFix storefront](https://b-hash88.github.io/knownfix/),
-a catalog of 38 real development-error fixes: 34 verified in production, 4
-documented, and 12 available in full for free.
+Developer fixes, six free workflow skills, three browser-local tools and ten
+scoped technical services. The [live overview](https://knownfix-backend-28.b-hash88.deno.net/overview)
+is the current inventory; search/free workflows need no account or API key.
 
-```bash
-npx knownfix search "your exact error"
-npx knownfix config claude
-npx knownfix tools
-npx knownfix books
+## Connect
+
+Remote Streamable HTTP: `https://knownfix-backend-28.b-hash88.deno.net/mcp`
+
+```sh
+npx knownfix@0.4.0 config claude-code
+npx knownfix@0.4.0 config codex
+npx knownfix@0.4.0 config cursor
+npx knownfix@0.4.0 config vscode
+npx knownfix@0.4.0 config claude-desktop
 ```
 
-## Release 0.3.17
+These print configuration only; they never install a client or change its files.
+Claude Code uses its HTTP CLI command, Codex uses TOML, Cursor/VS Code use their
+own JSON formats, and the Claude Desktop example uses a version-pinned stdio
+bridge. Merge entries without replacing existing settings. `bridge` starts a
+local MCP tools proxy to the remote endpoint; Node.js 18+ and the package's MCP
+SDK dependency are required. Review downloaded packages before running them.
 
-`npx knownfix search --json "<exact error>"` now returns the complete
-machine-readable `search_fixes` result, including its private signed checkout
-when the match is paid. Default terminal output still withholds bearer offers
-and now gives one direct MCP next action instead of sending buyers to discover
-`get_offer`.
+The [connection kit](https://b-hash88.github.io/knownfix/mcp-connect.html) includes
+client references, supported install links and first-use checks. Configuration
+saved, tools discovered and successful tool use are different states. After
+discovery, ask the client to call `get_free_skill` with
+`{"id":"api-response-triage"}`. Confirm a non-error result with the full workflow
+and acceptance checklist. Do not buy, create orders or send private input as a
+connection test. Use `get_overview` for the complete public catalog.
 
-## Field note: `npm ERR! code EOTP`
+## Offline commands
 
-EOTP is an authentication branch point, not one failure. Identify the publish
-path before changing credentials:
+After installing this package, these commands make no network calls:
 
-- Interactive terminal publish: complete the account's current 2FA or passkey
-  challenge.
-- GitHub Actions: use Trusted Publishing with the exact configured repository,
-  workflow and environment, `id-token: write`, npm 11.5.1 or newer, and Node
-  22.14 or newer.
-- Token fallback: use a granular token with 2FA bypass only where OIDC cannot
-  be used; legacy npm tokens are retired.
-
-Run the exact signature through the agent-readable checkout:
-
-```bash
-npx knownfix search --json "npm ERR! code EOTP"
+```sh
+knownfix inspect-response response.json
+knownfix retry-plan retry.json
 ```
 
-The [verified exact-fix page](https://b-hash88.github.io/knownfix/fixes/npm-publish-2fa-403.html)
-contains the free diagnosis. Repeated publish incidents are better served by
-the six-fix [npm Publishing Recovery Pack](https://b-hash88.github.io/knownfix/packs/npm-publishing-recovery-pack.html)
-for $4. The supporting [field report](https://www.moltbook.com/post/d7736de8-95bd-4311-83b9-6b50da3b0846),
-[open books](https://knownfix-backend-28.b-hash88.deno.net/books), and npm's
-official [2FA](https://docs.npmjs.com/about-two-factor-authentication),
-[Trusted Publishing](https://docs.npmjs.com/trusted-publishers), and
-[token](https://docs.npmjs.com/about-access-tokens) guidance are
-publicly inspectable before payment.
+Use a regular UTF-8 JSON file or `-` for piped stdin, maximum 200,000 bytes.
+JSON output goes to stdout: exit 0 = local check/model completed, 2 = invalid
+input/usage, 1 = unreadable input. No telemetry, input execution or automatic
+file writes. The response inspector omits payloads, IDs and server error text;
+valid envelope structure is not proof of tool success. Retry output contains
+validated settings and a serial failed-attempt model, never a webhook request.
+See [toolkit examples and limits](https://github.com/b-hash88/knownfix/tree/main/toolkit).
+Running through `npx` may download the package before execution; use an installed
+copy or the dependency-free repository commands for offline processing.
 
-## Agent connection
+## Install the six free skills
 
-The hosted MCP server uses Streamable HTTP:
+Standard `skills/<name>/SKILL.md` directories include the full workflows,
+synthetic exercises, acceptance criteria and standalone helpers where relevant.
+They are CC-BY-4.0, attributed to KnownFix; helper code is MIT. To review and
+install with the third-party [Skills CLI](https://github.com/vercel-labs/skills):
 
-```text
-https://knownfix-backend-28.b-hash88.deno.net/mcp
+```sh
+npx skills add b-hash88/knownfix --list
+npx skills add b-hash88/knownfix
 ```
 
-Run `npx knownfix config <client>` for Claude, Cursor, Codex, VS Code,
-LangChain, CrewAI, or raw JSON-RPC. `npx knownfix bridge` provides a local stdio
-bridge for clients without remote HTTP support.
+Choose client/scope interactively, or copy reviewed skill directories into your
+client's documented location. This installer downloads content and has its own
+network/privacy behavior. The local helper commands themselves have no telemetry.
 
-The remote server currently publishes 12 tools. Every tool includes an output
-schema and behavior annotations. Paid audits are previewed and redeemed through
-`audit_endpoint`; `get_skill` delivers both individual skills and assembled
-multi-fix bundles; and contributors can poll the private id returned by
-`submit_fix` with `check_submission` without exposing their submitted text.
-Current npm CLI EOTP wording is indexed as an exact alias of the documented
-2FA/authorized-publishing recovery, so agents reach the same remedy by either
-the interactive EOTP or registry 403 signature.
+## Search and paid services
 
-## Buying safely
+```sh
+npx knownfix@0.4.0 tools
+npx knownfix@0.4.0 search "your exact error"
+```
 
-Search and free samples require no account or API key. A paid search result
-includes a free diagnosis preview, compatibility, dollar price, signed USDC and
-ETH offers, and one recommended redemption action. For direct checkout:
+`search --json` returns the complete result, including private signed offers
+when applicable. Keep that output private. Search does not purchase anything.
+Payment/redemption requires the owner's explicit authorization; never infer it
+from installation or an agent's discovery request.
 
-- Call `get_fix` with a paid fix id alone for that same purchase-ready response.
-- Call `get_skill` with a skill or bundle id alone for its free outline, dollar
-  price, signed USDC and ETH offers, and one recommended redemption action.
-- Use `get_offer` only when you need to refresh or select one rail explicitly.
+The [ten-service catalog](https://b-hash88.github.io/knownfix/services.html)
+includes Verified Repo Fix ($149 USDC / 3 business days, payment only on verified
+delivery), Webhook Reliability Review ($179 / 3 days), SaaS Security Exposure
+Review ($299 / 5 days, written target/method/window authorization before testing),
+and Microsite Launch ($299 / 5 days, scope/content/assets approval and manual
+payment before work). Read the exact scope and delivery-clock conditions on each
+service page. Manual-approval services do not use automated checkout. No
+guarantee of findings, traffic, ranking or revenue.
 
-1. Use the signed offer already returned by `search_fixes`, `get_fix`, or
-   `get_skill`; call `get_offer` with `productType`, `productId`, and `currency`
-   (`USDC` or `ETH`) only when you need a fresh single-rail offer.
-2. Keep the returned `paymentOffer` token private.
-3. Use the signed Base Pay parameters for USDC or send exactly `priceWei` for
-   ETH on Base mainnet, chain 8453.
-4. Call `get_fix` or `get_skill` with both `paymentTx` and `paymentOffer`.
-   For Base Pay, `paymentTx` is the returned ERC-4337 UserOperation hash. For
-   exact ETH, it is the mined Base transaction hash.
+Books is owner-only, not public sales proof. `knownfix books` explains this
+without requesting statistics. Never put an owner credential in MCP settings.
 
-The payment proof and offer are atomically single-use. Inspect the public
-[books](https://knownfix-backend-28.b-hash88.deno.net/books) and
-[agent-readable store guide](https://b-hash88.github.io/knownfix/llms.txt)
-before paying. The **npm Publishing Recovery Pack** bundles six fixes plus a
-current decision tree for $4 USDC. The **GitHub Actions Failure Pack** adds a
-failed-phase decision tree and seven workflow, permission, cache, runtime, and
-verification recoveries for $5 USDC. The **MCP Server Operations Pack** adds a
-dual-era stdio, Streamable HTTP, tool-contract, and official-registry runbook
-with four catalog fixes for $6 USDC. The **Windows Agent Shell Pack** supplies
-six PowerShell, MSYS2, Node.js, secret-prompt, and environment recoveries for
-$4 USDC. The **Base Payment Verification Pack** combines the complete EVM
-seller-verification skill, distinct UserOperation and transaction proof paths,
-durable fulfillment controls, and seven related fixes for $49 USDC.
+## Development
 
-## Commands
-
-- `search "<error>"` — ranked match and purchase-ready checkout summary
-- `search --json "<error>"` — complete private machine-readable result
-- `config <client>` — client-specific MCP configuration
-- `tools` — live MCP tool list
-- `books` — live request-to-sale funnel
-- `bridge` — stdio proxy to the hosted MCP endpoint
-
-Requires Node.js 18 or newer. MIT licensed.
+`npm test` runs CLI contracts against local fixtures. The storefront's
+`scripts/export-cli-toolkit.mjs` exports generated skills, helper modules and
+client formats into this checkout, keeping them aligned with the browser tools.
+No npm install/publish hooks execute input or collect telemetry.
